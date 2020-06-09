@@ -1,0 +1,74 @@
+//General styles
+html,
+body {
+  background-color: #ffffff;
+}
+svg {
+  color: #0288d1;
+}
+
+//Navbar
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fafafa;
+  height: 64px;
+
+  .menu-icon {
+    margin-left: 4px;
+  }
+}
+
+.logo {
+  position: absolute;
+  z-index: 8000;
+  width: 90px;
+  top: -3px;
+  right: 50%;
+}
+
+//Drawer
+.drawer-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  width: 240px;
+}
+
+div.MuiDrawer-paper {
+  -webkit-box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+//Header
+.header {
+  margin-top: 25vh;
+
+  .MuiButton-root {
+    margin-top: 2vh;
+    background-color: #4caf50;
+    &:hover {
+      background-color: #1b5e20;
+    }
+  }
+  .MuiSvgIcon-root {
+    padding-left: 1vh;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .logo {
+    position: absolute;
+    right: 40%;
+    width: 80px;
+  }
+
+  .header {
+    margin-top: 30vh;
+
+    .header-image {
+      display: none;
+    }
+  }
+}
