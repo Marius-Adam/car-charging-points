@@ -5,15 +5,15 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import RoomIcon from "@material-ui/icons/Room";
 
-export default function Header() {
+export default function HomePage() {
   return (
-    <div className="header">
+    <div className="home">
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid item xs={12} sm={12} lg={6}>
           <img
             src="./assets/landing.png"
             alt="landing"
-            className="header-image"
+            className="home-image"
           />
         </Grid>
         <Grid item xs={12} sm={12} lg={6}>
