@@ -4,13 +4,17 @@ import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+//Icons
 import IconButton from "@material-ui/core/IconButton";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import MapIcon from "@material-ui/icons/Map";
+import HomeIcon from "@material-ui/icons/Home";
+import InfoIcon from "@material-ui/icons/Info";
+import MailIcon from "@material-ui/icons/Mail";
 
 export default function PersistentDrawerLeft() {
   const [open, setOpen] = React.useState(false);
@@ -64,7 +68,7 @@ export default function PersistentDrawerLeft() {
           <Link to="/">
             <ListItem button>
               <ListItemIcon>
-                <MapIcon />
+                <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="Home" />
             </ListItem>
@@ -80,7 +84,7 @@ export default function PersistentDrawerLeft() {
           <Link to="about">
             <ListItem button>
               <ListItemIcon>
-                <MapIcon />
+                <InfoIcon />
               </ListItemIcon>
               <ListItemText primary="About" />
             </ListItem>
@@ -88,7 +92,7 @@ export default function PersistentDrawerLeft() {
           <Link to="contact">
             <ListItem button>
               <ListItemIcon>
-                <MapIcon />
+                <MailIcon />
               </ListItemIcon>
               <ListItemText primary="Contact" />
             </ListItem>
