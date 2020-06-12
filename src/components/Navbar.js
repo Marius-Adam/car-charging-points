@@ -1,8 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -45,14 +45,14 @@ export default function PersistentDrawerLeft() {
               </IconButton>
             </div>
           </Toolbar>
-          <a href="/">
+          <Link to="/">
             <img
               src="./assets/logo.png"
               alt="logo"
               width="60"
               className="logo"
             />
-          </a>
+          </Link>
         </AppBar>
         <Drawer variant="persistent" anchor="left" open={open}>
           <div className="drawer-header">
@@ -61,12 +61,38 @@ export default function PersistentDrawerLeft() {
             </IconButton>
           </div>
           <Divider />
-          <ListItem button>
-            <ListItemIcon>
-              <MapIcon />
-            </ListItemIcon>
-            <ListItemText primary="Map" />
-          </ListItem>
+          <Link to="/">
+            <ListItem button>
+              <ListItemIcon>
+                <MapIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItem>
+          </Link>
+          <Link to="/map">
+            <ListItem button>
+              <ListItemIcon>
+                <MapIcon />
+              </ListItemIcon>
+              <ListItemText primary="Map" />
+            </ListItem>
+          </Link>
+          <Link to="about">
+            <ListItem button>
+              <ListItemIcon>
+                <MapIcon />
+              </ListItemIcon>
+              <ListItemText primary="About" />
+            </ListItem>
+          </Link>
+          <Link to="contact">
+            <ListItem button>
+              <ListItemIcon>
+                <MapIcon />
+              </ListItemIcon>
+              <ListItemText primary="Contact" />
+            </ListItem>
+          </Link>
         </Drawer>
       </div>
     </>

@@ -2,9 +2,15 @@
 html,
 body {
   background-color: #ffffff;
+  font-family: "Montserrat", sans-serif;
 }
 svg {
   color: #0288d1;
+}
+
+a:-webkit-any-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 //Navbar
@@ -55,6 +61,30 @@ div.MuiDrawer-paper {
   .MuiSvgIcon-root {
     padding-left: 1vh;
   }
+}
+
+//Map
+.map {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+//About
+.about {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+//Contact
+.contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 @media only screen and (max-width: 600px) {
