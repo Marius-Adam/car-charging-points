@@ -1,9 +1,28 @@
-import React, { useState } from "react";
-import ReactMapGL from "react-map-gl";
+import React, { useState, useEffect } from "react";
+import ReactMapGL, { Marker } from "react-map-gl";
+
+import RoomIcon from "@material-ui/icons/Room";
+import SideDrawer from "./SideDrawer";
 
 export default function MapPage() {
   const [viewport, setViewport] = useState({});
+  const [data, setData] = useState([]);
 
+  //Api call to openchargemaps
+  useEffect(() => {
+    fetchAPI();
+  }, []);
+
+  const fetchAPI = async () => {
+    const response = await fetch(
+      "https://api.openchargemap.io/v3/poi/?output=json&countrycode=GB&maxresults=100&compact=true&verbose=false"
+    );
+    const data = await response.json();
+    setData(data);
+    console.log(data);
+  };
+
+  //Get user location
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
@@ -12,6 +31,7 @@ export default function MapPage() {
     }
   }
 
+  //Set map position based on location of user
   function showPosition(position) {
     setViewport({
       latitude: position.coords.latitude,
@@ -24,6 +44,7 @@ export default function MapPage() {
 
   return (
     <div className="map">
+      <SideDrawer />
       <ReactMapGL
         onLoad={getLocation}
         {...viewport}
@@ -32,7 +53,19 @@ export default function MapPage() {
         onViewportChange={(viewport) => {
           setViewport(viewport);
         }}
-      ></ReactMapGL>
+      >
+        {data.map((location, index) => (
+          <Marker
+            key={index}
+            latitude={location.AddressInfo.Latitude}
+            longitude={location.AddressInfo.Longitude}
+          >
+            <button className="pin-point">
+              <RoomIcon />
+            </button>
+          </Marker>
+        ))}
+      </ReactMapGL>
     </div>
   );
 }

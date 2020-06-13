@@ -66,10 +66,35 @@ div.MuiDrawer-paper {
 //Map
 .map {
   display: flex;
-  justify-content: center;
-  align-items: center;
+
+  .pin-point {
+    background: none;
+    border: none;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+//Side drawer
+.side-drawer {
+  background: #fafafa;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 40vw;
   height: 100vh;
-  width: 100vw;
+  -webkit-box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
+
+  .MuiIconButton-root {
+    position: absolute;
+    top: 8.8vh;
+    left: 36.3vw;
+  }
 }
 
 //About
@@ -100,6 +125,14 @@ div.MuiDrawer-paper {
 
     .home-image {
       display: none;
+    }
+  }
+
+  .side-drawer {
+    width: 50vw;
+
+    .MuiIconButton-root {
+      left: 35vw;
     }
   }
 }
