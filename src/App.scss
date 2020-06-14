@@ -66,6 +66,8 @@ div.MuiDrawer-paper {
 //Map
 .map {
   display: flex;
+  width: 100vw;
+  height: 100vh;
 
   .pin-point {
     background: none;
@@ -79,6 +81,7 @@ div.MuiDrawer-paper {
 
 //Side drawer
 .side-drawer {
+  display: block;
   background: #fafafa;
   position: absolute;
   top: 0;
@@ -92,9 +95,13 @@ div.MuiDrawer-paper {
 
   .MuiIconButton-root {
     position: absolute;
-    top: 8.8vh;
-    left: 36.3vw;
+    top: 10vh;
+    left: 35vw;
   }
+}
+
+.close-drawer {
+  display: none;
 }
 
 //About
@@ -113,7 +120,7 @@ div.MuiDrawer-paper {
   height: 100vh;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
   .logo {
     position: absolute;
     right: 40%;
@@ -132,7 +139,8 @@ div.MuiDrawer-paper {
     width: 50vw;
 
     .MuiIconButton-root {
-      left: 35vw;
+      left: 32vw;
+      top: 12vh;
     }
   }
 }

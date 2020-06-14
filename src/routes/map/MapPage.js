@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from "react";
 import ReactMapGL, { Marker } from "react-map-gl";
 
+//Icons
 import RoomIcon from "@material-ui/icons/Room";
+
 import SideDrawer from "./SideDrawer";
+import { fetchChargerLocations } from "../../OpenChargerAPI";
+import useDebouncedValue from "../../hooks/use-debounce";
 
 export default function MapPage() {
   const [viewport, setViewport] = useState({});
   const [data, setData] = useState([]);
+  const [showDrawer, setShowDrawer] = useState(false);
+  const debouncedViewport = useDebouncedValue(viewport, 500);
 
   //Api call to openchargemaps
   useEffect(() => {
-    fetchAPI();
-  }, []);
-
-  const fetchAPI = async () => {
-    const response = await fetch(
-      "https://api.openchargemap.io/v3/poi/?output=json&countrycode=GB&maxresults=100&compact=true&verbose=false"
-    );
-    const data = await response.json();
-    setData(data);
-    console.log(data);
-  };
+    const fetchData = async () => {
+      const { latitude: lat, longitude: long } = debouncedViewport;
+      const results = await fetchChargerLocations(lat, long, 100);
+      setData(results);
+    };
+    fetchData();
+  }, [debouncedViewport]);
 
   //Get user location
   function getLocation() {
@@ -38,7 +40,7 @@ export default function MapPage() {
       longitude: position.coords.longitude,
       width: "100vw",
       height: "100vh",
-      zoom: 10,
+      zoom: 12,
     });
   }
 
@@ -46,6 +48,7 @@ export default function MapPage() {
     <div className="map">
       <SideDrawer />
       <ReactMapGL
+        className="mapbox"
         onLoad={getLocation}
         {...viewport}
         mapboxApiAccessToken="pk.eyJ1IjoibWNhZGFtZWsiLCJhIjoiY2tiY21lbHA0MDNkejJydXg3N3J1ZXppcSJ9.ye1zuvUop6e-tjGkns2fjQ"
