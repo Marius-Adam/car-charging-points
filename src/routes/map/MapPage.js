@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from "react";
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import { fetchChargerLocations } from "../../OpenChargerAPI";
+import useDebouncedValue from "../../hooks/use-debounce";
 
 //Icons
 import RoomIcon from "@material-ui/icons/Room";
+import IconButton from "@material-ui/core/IconButton";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
+//Components
 import SideDrawer from "./SideDrawer";
-import { fetchChargerLocations } from "../../OpenChargerAPI";
-import useDebouncedValue from "../../hooks/use-debounce";
+import PopupInfo from "./PopupInfo";
 
 export default function MapPage() {
   const [viewport, setViewport] = useState({});
   const [data, setData] = useState([]);
-  const [showDrawer, setShowDrawer] = useState(false);
+  const [selectedCharger, setSelectedCharger] = useState(null);
   const debouncedViewport = useDebouncedValue(viewport, 500);
 
   //Api call to openchargemaps
@@ -46,7 +51,7 @@ export default function MapPage() {
 
   return (
     <div className="map">
-      <SideDrawer />
+      {/* <SideDrawer selectedCharger={selectedCharger} /> */}
       <ReactMapGL
         className="mapbox"
         onLoad={getLocation}
@@ -57,17 +62,37 @@ export default function MapPage() {
           setViewport(viewport);
         }}
       >
-        {data.map((location, index) => (
+        <IconButton className="drawer-button">
+          <ChevronRightIcon fontSize="large" />
+        </IconButton>
+        {data.map((charger, index) => (
           <Marker
             key={index}
-            latitude={location.AddressInfo.Latitude}
-            longitude={location.AddressInfo.Longitude}
+            latitude={charger.AddressInfo.Latitude}
+            longitude={charger.AddressInfo.Longitude}
           >
-            <button className="pin-point">
+            <IconButton
+              className="pin-point"
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedCharger(charger);
+              }}
+            >
               <RoomIcon />
-            </button>
+            </IconButton>
           </Marker>
         ))}
+        {selectedCharger ? (
+          <Popup
+            latitude={selectedCharger.AddressInfo.Latitude}
+            longitude={selectedCharger.AddressInfo.Longitude}
+            onClose={() => {
+              setSelectedCharger(null);
+            }}
+          >
+            <PopupInfo selectedCharger={selectedCharger} />
+          </Popup>
+        ) : null}
       </ReactMapGL>
     </div>
   );
