@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import { fetchChargerLocations } from "../../OpenChargerAPI";
 import useDebouncedValue from "../../hooks/use-debounce";
+
+import MapboxGlMap from "./Map";
 
 //Icons
 import RoomIcon from "@material-ui/icons/Room";
@@ -11,10 +13,40 @@ import IconButton from "@material-ui/core/IconButton";
 import SideDrawer from "./SideDrawer";
 import PopupInfo from "./PopupInfo";
 
+const toGeoJSON = (apiData) => {
+  const markerData = apiData.map((data) => {
+    const {
+      AddressInfo: { Latitude, Longitude },
+    } = data;
+
+    return {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [Latitude, Longitude]
+      },
+    };
+  });
+
+  const geoJSON = {
+    type: "geojson",
+    data: {
+      type: "FeatureCollection",
+      features: markerData,
+    },
+  };
+
+  console.log(geoJSON);
+
+  return geoJSON;
+};
+
 export default function MapPage() {
   const [viewport, setViewport] = useState({});
   const [data, setData] = useState([]);
   const [selectedCharger, setSelectedCharger] = useState(null);
+  const mapRef = useRef();
+
   const debouncedViewport = useDebouncedValue(viewport, 500);
 
   //Api call to openchargemaps
@@ -22,7 +54,7 @@ export default function MapPage() {
     const fetchData = async () => {
       const { latitude: lat, longitude: long } = debouncedViewport;
       const results = await fetchChargerLocations(lat, long, 100);
-      setData(results);
+      setData(toGeoJSON(results));
     };
     fetchData();
   }, [debouncedViewport]);
@@ -47,13 +79,27 @@ export default function MapPage() {
     });
   }
 
+  // const onMarkerClick = (charger) => {
+  //   const {
+  //     AddressInfo: { Latitude, Longitude },
+  //   } = charger;
+  //   mapRef.current.getMap().flyTo({
+  //     center: [Longitude, Latitude],
+  //     essential: true
+  //   });
+  //   setSelectedCharger(charger);
+  // };
+
   return (
     <div className="map">
       <SideDrawer selectedCharger={selectedCharger} />
-      <ReactMapGL
+      <MapboxGlMap dataSource={data} />
+      {/* <ReactMapGL
+        ref={mapRef}
         className="mapbox"
         onLoad={getLocation}
         {...viewport}
+        data={data}
         mapboxApiAccessToken="pk.eyJ1IjoibWNhZGFtZWsiLCJhIjoiY2tiY21lbHA0MDNkejJydXg3N3J1ZXppcSJ9.ye1zuvUop6e-tjGkns2fjQ"
         mapStyle="mapbox://styles/mcadamek/ckbgc9da04z661irxdneswk8d"
         onViewportChange={(viewport) => {
@@ -70,7 +116,7 @@ export default function MapPage() {
               className="pin-point"
               onClick={(e) => {
                 e.preventDefault();
-                setSelectedCharger(charger);
+                onMarkerClick(charger);
               }}
             >
               <RoomIcon />
@@ -88,7 +134,7 @@ export default function MapPage() {
             <PopupInfo selectedCharger={selectedCharger} />
           </Popup>
         ) : null}
-      </ReactMapGL>
+      </ReactMapGL> */}
     </div>
   );
 }
