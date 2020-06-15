@@ -33,7 +33,7 @@ a:-webkit-any-link {
   right: 50%;
 }
 
-//Drawer
+//Navbar drawer
 .drawer-header {
   display: flex;
   justify-content: flex-end;
@@ -75,21 +75,35 @@ div.MuiDrawer-paper {
     &:hover {
       background: #fafafa;
     }
-  }
-
-  .pin-point {
-    background: none;
-    border: none;
-    cursor: pointer;
-    &:focus {
-      outline: none;
+    .pin-point {
+      background: none;
+      border: none;
+      cursor: pointer;
+      &:focus {
+        outline: none;
+      }
     }
   }
+
+  //Popup
   .mapboxgl-popup-content {
     background-color: #fafafa;
     -webkit-box-shadow: -0px 5px 10px 5px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: -0px 5px 10px 5px rgba(0, 0, 0, 0.4);
     box-shadow: -0px 1px 10px 5px rgba(0, 0, 0, 0.4);
+
+    .connections {
+      display: flex;
+      justify-content: space-evenly;
+
+      .connection-type {
+        margin: 0 2vh;
+      }
+
+      .MuiTypography-root {
+        font-size: 12px;
+      }
+    }
   }
 
   :focus.mapboxgl-popup-close-button {
@@ -97,42 +111,33 @@ div.MuiDrawer-paper {
   }
 }
 
-.connections {
-  display: flex;
-  justify-content: space-evenly;
-
-  .connection-type {
-    margin: 0 2vh;
-  }
-
-  .MuiTypography-root {
-    font-size: 12px;
-  }
-}
-
 //Side drawer
 .side-drawer {
-  display: block;
-  background: #fafafa;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 10vh;
+  left: 1vw;
   z-index: 1;
-  width: 40vw;
-  height: 100vh;
-  -webkit-box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
-  box-shadow: -10px 5px 10px 10px rgba(0, 0, 0, 0.4);
-
-  .MuiIconButton-root {
-    position: absolute;
-    top: 10vh;
-    left: 35vw;
+  .side-button {
+    background-color: rgba(250, 250, 250, 0.8);
+    &:hover {
+      background-color: rgba(250, 250, 250, 1);
+    }
   }
 }
 
-.close-drawer {
-  display: none;
+//Side drawer popup modal
+.MuiDrawer-root.MuiDrawer-modal {
+  position: relative !important;
+  .MuiDrawer-paper {
+    align-items: flex-end;
+    padding: 1vh;
+  }
+  .inner-drawer {
+    width: 40vw;
+  }
+  .MuiBackdrop-root {
+    visibility: hidden;
+  }
 }
 
 //About
@@ -152,26 +157,18 @@ div.MuiDrawer-paper {
 }
 
 @media only screen and (max-width: 800px) {
+  //Navbar
   .logo {
     position: absolute;
     right: 40%;
     width: 80px;
   }
-
+  //Home page
   .home {
     margin-top: 30vh;
 
     .home-image {
       display: none;
-    }
-  }
-
-  .side-drawer {
-    width: 50vw;
-
-    .MuiIconButton-root {
-      left: 32vw;
-      top: 12vh;
     }
   }
 }

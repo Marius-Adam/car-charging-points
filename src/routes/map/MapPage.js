@@ -6,8 +6,6 @@ import useDebouncedValue from "../../hooks/use-debounce";
 //Icons
 import RoomIcon from "@material-ui/icons/Room";
 import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 //Components
 import SideDrawer from "./SideDrawer";
@@ -51,20 +49,17 @@ export default function MapPage() {
 
   return (
     <div className="map">
-      {/* <SideDrawer selectedCharger={selectedCharger} /> */}
+      <SideDrawer selectedCharger={selectedCharger} />
       <ReactMapGL
         className="mapbox"
         onLoad={getLocation}
         {...viewport}
         mapboxApiAccessToken="pk.eyJ1IjoibWNhZGFtZWsiLCJhIjoiY2tiY21lbHA0MDNkejJydXg3N3J1ZXppcSJ9.ye1zuvUop6e-tjGkns2fjQ"
-        mapStyle="mapbox://styles/mcadamek/ckbcmp4rd14dk1inzkxonhe4d"
+        mapStyle="mapbox://styles/mcadamek/ckbgc9da04z661irxdneswk8d"
         onViewportChange={(viewport) => {
           setViewport(viewport);
         }}
       >
-        <IconButton className="drawer-button">
-          <ChevronRightIcon fontSize="large" />
-        </IconButton>
         {data.map((charger, index) => (
           <Marker
             key={index}
