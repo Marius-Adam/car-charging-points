@@ -13,6 +13,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-hot-loader": "^4.12.21",
     "react-map-gl": "^5.2.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1"
@@ -38,5 +39,9 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-preset-react": "^6.24.1"
+  }
 }
