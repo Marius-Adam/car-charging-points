@@ -1,140 +1,87 @@
-import React, { useState, useEffect, useRef } from "react";
-import ReactMapGL, { Marker, Popup } from "react-map-gl";
-import { fetchChargerLocations } from "../../OpenChargerAPI";
+import React, { useEffect, useRef, useState } from "react";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { fetchChargerLocations } from "../../API/OpenChargerAPI";
+import { toGeoJSON } from "../../API/JSONToGeoJSON";
 import useDebouncedValue from "../../hooks/use-debounce";
 
-import MapboxGlMap from "./Map";
-
-//Icons
-import RoomIcon from "@material-ui/icons/Room";
-import IconButton from "@material-ui/core/IconButton";
-
-//Components
-import SideDrawer from "./SideDrawer";
-import PopupInfo from "./PopupInfo";
-
-const toGeoJSON = (apiData) => {
-  const markerData = apiData.map((data) => {
-    const {
-      AddressInfo: { Latitude, Longitude },
-    } = data;
-
-    return {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [Latitude, Longitude]
-      },
-    };
-  });
-
-  const geoJSON = {
-    type: "geojson",
-    data: {
-      type: "FeatureCollection",
-      features: markerData,
-    },
-  };
-
-  console.log(geoJSON);
-
-  return geoJSON;
+const styles = {
+  width: "100vw",
+  height: "100vh",
+  position: "absolute",
 };
 
-export default function MapPage() {
-  const [viewport, setViewport] = useState({});
+const MapboxGLMap = () => {
+  const [map, setMap] = useState(null);
   const [data, setData] = useState([]);
-  const [selectedCharger, setSelectedCharger] = useState(null);
-  const mapRef = useRef();
+  const mapContainer = useRef(null);
+  const debouncedData = useDebouncedValue(data, 500);
 
-  const debouncedViewport = useDebouncedValue(viewport, 500);
-
-  //Api call to openchargemaps
   useEffect(() => {
     const fetchData = async () => {
-      const { latitude: lat, longitude: long } = debouncedViewport;
-      const results = await fetchChargerLocations(lat, long, 100);
-      setData(toGeoJSON(results));
+      const results = await fetchChargerLocations();
+      setData(results);
     };
     fetchData();
-  }, [debouncedViewport]);
 
-  //Get user location
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  }
+    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
+    const initializeMap = ({ setMap, mapContainer }) => {
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
+        center: [10.2551, 50.2551],
+        zoom: 4,
+      });
+      // Add geolocate control to the map.
+      map.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          trackUserLocation: true,
+        })
+      );
 
-  //Set map position based on location of user
-  function showPosition(position) {
-    setViewport({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-      width: "100vw",
-      height: "100vh",
-      zoom: 12,
-    });
-  }
+      map.on("load", () => {
+        setMap(map);
+        map.resize();
+        map.addSource("points", {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: toGeoJSON(debouncedData),
+          },
+        });
 
-  // const onMarkerClick = (charger) => {
-  //   const {
-  //     AddressInfo: { Latitude, Longitude },
-  //   } = charger;
-  //   mapRef.current.getMap().flyTo({
-  //     center: [Longitude, Latitude],
-  //     essential: true
-  //   });
-  //   setSelectedCharger(charger);
-  // };
+        map.addLayer({
+          id: "symbols",
+          type: "symbol",
+          source: "points",
+          layout: {
+            "icon-image": "charging-station-15",
+          },
+        });
+      });
 
-  return (
-    <div className="map">
-      <SideDrawer selectedCharger={selectedCharger} />
-      <MapboxGlMap dataSource={data} />
-      {/* <ReactMapGL
-        ref={mapRef}
-        className="mapbox"
-        onLoad={getLocation}
-        {...viewport}
-        data={data}
-        mapboxApiAccessToken="pk.eyJ1IjoibWNhZGFtZWsiLCJhIjoiY2tiY21lbHA0MDNkejJydXg3N3J1ZXppcSJ9.ye1zuvUop6e-tjGkns2fjQ"
-        mapStyle="mapbox://styles/mcadamek/ckbgc9da04z661irxdneswk8d"
-        onViewportChange={(viewport) => {
-          setViewport(viewport);
-        }}
-      >
-        {data.map((charger, index) => (
-          <Marker
-            key={index}
-            latitude={charger.AddressInfo.Latitude}
-            longitude={charger.AddressInfo.Longitude}
-          >
-            <IconButton
-              className="pin-point"
-              onClick={(e) => {
-                e.preventDefault();
-                onMarkerClick(charger);
-              }}
-            >
-              <RoomIcon />
-            </IconButton>
-          </Marker>
-        ))}
-        {selectedCharger ? (
-          <Popup
-            latitude={selectedCharger.AddressInfo.Latitude}
-            longitude={selectedCharger.AddressInfo.Longitude}
-            onClose={() => {
-              setSelectedCharger(null);
-            }}
-          >
-            <PopupInfo selectedCharger={selectedCharger} />
-          </Popup>
-        ) : null}
-      </ReactMapGL> */}
-    </div>
-  );
-}
+      // Center the map on the coordinates of any clicked symbol from the 'symbols' layer.
+      map.on("click", "symbols", function (e) {
+        map.easeTo({ center: e.features[0].geometry.coordinates });
+      });
+
+      // Change the cursor to a pointer when the it enters a feature in the 'symbols' layer.
+      map.on("mouseenter", "symbols", function () {
+        map.getCanvas().style.cursor = "pointer";
+      });
+
+      // Change it back to a pointer when it leaves.
+      map.on("mouseleave", "symbols", function () {
+        map.getCanvas().style.cursor = "";
+      });
+    };
+
+    if (!map) initializeMap({ setMap, mapContainer });
+  }, [map, debouncedData]);
+  return <div ref={(el) => (mapContainer.current = el)} style={styles} />;
+};
+
+export default MapboxGLMap;
