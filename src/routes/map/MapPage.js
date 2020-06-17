@@ -5,6 +5,8 @@ import { fetchChargerLocations } from "../../API/OpenChargerAPI";
 import { toGeoJSON } from "../../API/JSONToGeoJSON";
 import useDebouncedValue from "../../hooks/use-debounce";
 
+import SideDrawer from "./SideDrawer";
+
 const styles = {
   width: "100vw",
   height: "100vh",
@@ -81,7 +83,11 @@ const MapboxGLMap = () => {
 
     if (!map) initializeMap({ setMap, mapContainer });
   }, [map, debouncedData]);
-  return <div ref={(el) => (mapContainer.current = el)} style={styles} />;
+  return (
+    <div ref={(el) => (mapContainer.current = el)} style={styles}>
+      <SideDrawer />
+    </div>
+  );
 };
 
 export default MapboxGLMap;
