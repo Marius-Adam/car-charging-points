@@ -8,7 +8,10 @@ export const toGeoJSON = (apiData) => {
         type: "Point",
         coordinates: [info.AddressInfo.Longitude, info.AddressInfo.Latitude],
       },
-      properties: {},
+      properties: {
+        title: info.AddressInfo.Title,
+        postcode: info.AddressInfo.Postcode,
+      },
     };
   });
 };

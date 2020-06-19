@@ -1,5 +1,5 @@
 import React from "react";
-import { hot } from 'react-hot-loader/root';
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.scss";
 
@@ -25,4 +25,4 @@ function App() {
   );
 }
 
-export default hot(App);
+export default App;

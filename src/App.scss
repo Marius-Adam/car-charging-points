@@ -69,6 +69,20 @@ div.mapboxgl-ctrl-top-right {
   right: 0;
 }
 
+.popup-title {
+  margin-bottom: 5px;
+}
+
+.popup-postcode {
+  margin: 0;
+  font-weight: normal;
+}
+.popup-subtitle {
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
 //Side drawer
 .side-drawer {
   position: absolute;
