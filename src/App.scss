@@ -64,17 +64,20 @@ div.MuiDrawer-paper {
 }
 
 //Map
-div.mapboxgl-ctrl-top-right {
-  top: 9vh;
-  right: 0;
+div.mapboxgl-ctrl-top-left {
+  top: 10vh;
+  .mapboxgl-ctrl {
+    width: 40vw;
+  }
 }
 
 .popup-title {
-  margin-bottom: 5px;
+  margin: 0px;
+  font-size: 18px;
 }
 
 .popup-postcode {
-  margin: 0;
+  margin: 5px 0;
   font-weight: normal;
 }
 .popup-subtitle {
