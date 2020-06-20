@@ -66,8 +66,20 @@ div.MuiDrawer-paper {
 //Map
 div.mapboxgl-ctrl-top-left {
   top: 10vh;
+
   .mapboxgl-ctrl {
     width: 40vw;
+    margin-left: 2vw;
+  }
+}
+
+div {
+  .mapboxgl-ctrl-group {
+    margin-top: 12vh;
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    margin-right: 2vw;
   }
 }
 

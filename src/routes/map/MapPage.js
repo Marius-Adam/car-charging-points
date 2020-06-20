@@ -1,24 +1,37 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import React, { useState, useRef } from "react";
-import MapGL from "react-map-gl";
-import DeckGL, { GeoJsonLayer } from "deck.gl";
+import React, { useState, useRef, useEffect } from "react";
+import MapGL, { GeolocateControl } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
+import axios from "axios";
 
 export default function MapPage() {
+  const [data, setData] = useState([]);
   const [viewport, setViewport] = useState({
-    latitude: 37.7577,
-    longitude: -122.4376,
-    zoom: 8,
+    latitude: 50.526,
+    longitude: 15.2551,
+    zoom: 4,
+    maxZoom: 12,
   });
-  const [searchResultLayer, setSearchResultsLayer] = useState(null);
+
+  //Api call to OpenChargersAPI
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        `https://api.openchargemap.io/v3/poi/?output=json&distance=100&latitude=${viewport.latitude}&longitude=${viewport.longitude}&verbose=true&compact=true`
+      );
+      setData(result.data);
+    };
+    fetchData();
+  }, [viewport.latitude, viewport.longitude]);
+
+  console.log(data);
   const mapRef = useRef();
 
   const handleViewportChange = (newViewport) => {
     setViewport({ ...viewport, ...newViewport });
   };
 
-  // if you are happy with Geocoder default settings, you can just use handleViewportChange directly
   const handleGeocoderViewportChange = (viewport) => {
     const geocoderDefaultOverrides = { transitionDuration: 1000 };
 
@@ -28,42 +41,30 @@ export default function MapPage() {
     });
   };
 
-  const handleOnResult = (event) => {
-    console.log(event.result);
-    setSearchResultsLayer(
-      new GeoJsonLayer({
-        id: "search-result",
-        data: event.result.geometry,
-        getFillColor: [255, 0, 0, 128],
-        getRadius: 1000,
-        pointRadiusMinPixels: 10,
-        pointRadiusMaxPixels: 10,
-      })
-    );
-  };
-
   console.log(viewport);
 
   return (
-    <div style={{ height: "100vh" }}>
-      <MapGL
-        ref={mapRef}
-        {...viewport}
-        mapStyle="mapbox://styles/mcadamek/ckbmn7bim1knm1imdyamv4qbl"
-        width="100%"
-        height="100%"
-        onViewportChange={handleViewportChange}
+    <MapGL
+      ref={mapRef}
+      {...viewport}
+      mapStyle="mapbox://styles/mcadamek/ckbmn7bim1knm1imdyamv4qbl"
+      width="100vw"
+      height="100vh"
+      onViewportChange={handleViewportChange}
+      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
+    >
+      <Geocoder
+        mapRef={mapRef}
+        onViewportChange={handleGeocoderViewportChange}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
-      >
-        <Geocoder
-          mapRef={mapRef}
-          onResult={handleOnResult}
-          onViewportChange={handleGeocoderViewportChange}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
-          position="top-left"
-        />
-        <DeckGL {...viewport} layers={[searchResultLayer]} />
-      </MapGL>
-    </div>
+        position="top-left"
+      />
+      <GeolocateControl
+        positionOptions={{ enableHighAccuracy: true }}
+        trackUserLocation={true}
+        fitBoundsOptions={{ maxZoom: 15 }}
+        position="top-right"
+      />
+    </MapGL>
   );
 }
