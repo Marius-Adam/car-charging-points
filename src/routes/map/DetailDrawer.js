@@ -1,6 +1,5 @@
 import React from "react";
 import Drawer from "@material-ui/core/Drawer";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -18,12 +17,6 @@ export default function TemporaryDrawer() {
     <>
       {["left"].map((anchor) => (
         <div className="side-drawer" key={anchor}>
-          {/* <IconButton
-            className="side-button"
-            onClick={toggleDrawer(anchor, true)}
-          >
-            <ChevronRightIcon fontSize="large" />
-          </IconButton> */}
           <Drawer
             anchor={anchor}
             open={state[anchor]}
