@@ -38,7 +38,7 @@ a:-webkit-any-link {
   display: flex;
   justify-content: flex-end;
   padding: 8px;
-  width: 240px;
+  width: 20vw;
 }
 
 div.MuiDrawer-paper {
@@ -81,21 +81,9 @@ div {
     right: 0;
     margin-right: 2vw;
   }
-}
-
-.popup-title {
-  margin: 0px;
-  font-size: 18px;
-}
-
-.popup-postcode {
-  margin: 5px 0;
-  font-weight: normal;
-}
-.popup-subtitle {
-  font-size: 14px;
-  margin-top: 10px;
-  text-align: center;
+  .MuiButton-root {
+    border-radius: 100%;
+  }
 }
 
 //Side drawer

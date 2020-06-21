@@ -4,28 +4,30 @@ import React, { useState, useRef, useEffect } from "react";
 import MapGL, { GeolocateControl } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
 import axios from "axios";
+import useDebounce from "../../hooks/use-debounce";
+
+import Pins from "./Pins";
 
 export default function MapPage() {
   const [data, setData] = useState([]);
   const [viewport, setViewport] = useState({
-    latitude: 50.526,
-    longitude: 15.2551,
-    zoom: 4,
-    maxZoom: 12,
+    latitude: 51.50773,
+    longitude: -0.13457,
+    zoom: 12.5,
   });
+  const debouncedViewport = useDebounce(viewport, 500);
 
   //Api call to OpenChargersAPI
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        `https://api.openchargemap.io/v3/poi/?output=json&distance=100&latitude=${viewport.latitude}&longitude=${viewport.longitude}&verbose=true&compact=true`
+        `https://api.openchargemap.io/v3/poi/?output=json&latitude=${debouncedViewport.latitude}&longitude=${debouncedViewport.longitude}&distance=100&verbose=true&compact=true`
       );
       setData(result.data);
     };
     fetchData();
-  }, [viewport.latitude, viewport.longitude]);
+  }, [debouncedViewport]);
 
-  console.log(data);
   const mapRef = useRef();
 
   const handleViewportChange = (newViewport) => {
@@ -41,8 +43,6 @@ export default function MapPage() {
     });
   };
 
-  console.log(viewport);
-
   return (
     <MapGL
       ref={mapRef}
@@ -53,6 +53,7 @@ export default function MapPage() {
       onViewportChange={handleViewportChange}
       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
     >
+      <Pins data={data} />
       <Geocoder
         mapRef={mapRef}
         onViewportChange={handleGeocoderViewportChange}
