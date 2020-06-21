@@ -5,13 +5,18 @@ import Button from "@material-ui/core/Button";
 
 export default function PopupInfo(props) {
   const pin = props.selectedPin;
-  console.log(pin);
+  console.log(props);
   return (
     <Popup
       latitude={pin.AddressInfo.Latitude}
       longitude={pin.AddressInfo.Longitude}
-      onClose={props.handleClose}
+      closeButton={false}
     >
+      <div className="close-popup">
+        <button onClick={props.handleClose} className="close-button">
+          x
+        </button>
+      </div>
       <div>
         <Typography variant="h6">{pin.AddressInfo.Title}</Typography>
         <Typography variant="caption" gutterBottom>
@@ -50,7 +55,11 @@ export default function PopupInfo(props) {
           })}
         </div>
         <div className="detail-button-div">
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={props.openDrawer}
+          >
             More Details
           </Button>
         </div>

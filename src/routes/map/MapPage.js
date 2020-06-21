@@ -1,11 +1,10 @@
-import "mapbox-gl/dist/mapbox-gl.css";
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import React, { useState, useRef, useEffect } from "react";
 import MapGL, { GeolocateControl } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
 import axios from "axios";
 import useDebounce from "../../hooks/use-debounce";
 
+//Components
 import DetailDrawer from "./DetailDrawer";
 import Pins from "./Pins";
 
@@ -16,7 +15,20 @@ export default function MapPage() {
     longitude: -0.13457,
     zoom: 12.5,
   });
+  const [drawerState, setDrawerState] = useState({
+    left: false,
+  });
   const debouncedViewport = useDebounce(viewport, 500);
+
+  //Detail drawer state toggler
+  const toggleDrawer = (anchor, open) => (event) => {
+    setDrawerState({ ...drawerState, [anchor]: open });
+    console.log("clicked in popup");
+  };
+
+  const openDrawer = () => {
+    setDrawerState({ left: true });
+  };
 
   //Api call to OpenChargersAPI
   useEffect(() => {
@@ -54,7 +66,7 @@ export default function MapPage() {
       onViewportChange={handleViewportChange}
       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
     >
-      <Pins data={data} />
+      <Pins data={data} openDrawer={openDrawer} />
       <Geocoder
         mapRef={mapRef}
         onViewportChange={handleGeocoderViewportChange}
@@ -67,7 +79,12 @@ export default function MapPage() {
         fitBoundsOptions={{ maxZoom: 15 }}
         position="top-right"
       />
-      <DetailDrawer />
+      <DetailDrawer
+        chargersInfo={data}
+        setDrawerState={setDrawerState}
+        drawerState={drawerState}
+        toggleDrawer={toggleDrawer}
+      />
     </MapGL>
   );
 }

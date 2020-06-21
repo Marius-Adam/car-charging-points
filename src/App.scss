@@ -101,6 +101,26 @@ div {
   }
 }
 
+.close-popup {
+  display: flex;
+  margin-bottom: 1vh;
+  .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s ease;
+    &:hover {
+      color: #1778f2;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
 .detail-button-div {
   display: flex;
   justify-content: center;
@@ -135,12 +155,17 @@ div {
 //Side drawer popup modal
 .MuiDrawer-root.MuiDrawer-modal {
   position: relative !important;
+  z-index: 3 !important;
+
   .MuiDrawer-paper {
     align-items: flex-end;
     padding: 1vh;
+    z-index: 2;
+    padding-top: 10vh;
+    background-color: #fafafa;
   }
   .inner-drawer {
-    width: 40vw;
+    width: 30vw;
   }
   .MuiBackdrop-root {
     visibility: hidden;

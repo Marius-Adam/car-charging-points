@@ -5,7 +5,7 @@ import PopupInfo from "./PopupInfo";
 
 export default function Pins(props) {
   const chargers = props.data;
-
+  console.log(props);
   const [selectedPin, setSelectedPin] = useState(null);
 
   const handleClose = () => {
@@ -31,7 +31,12 @@ export default function Pins(props) {
         </Marker>
       ))}
       {selectedPin ? (
-        <PopupInfo selectedPin={selectedPin} handleClose={handleClose} />
+        <PopupInfo
+          selectedPin={selectedPin}
+          handleClose={handleClose}
+          setSelectedPin={setSelectedPin}
+          openDrawer={props.openDrawer}
+        />
       ) : null}
     </>
   );
