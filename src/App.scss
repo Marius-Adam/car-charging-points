@@ -87,6 +87,37 @@ div {
   }
 }
 
+.mapboxgl-popup-content {
+  -webkit-box-shadow: 0px 5px 10px 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 5px 10px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 5px 10px 5px rgba(0, 0, 0, 0.4) !important;
+  .MuiButton-containedPrimary {
+    border-radius: 5px;
+    background-color: #0288d1;
+    margin: auto;
+    &:hover {
+      background-color: #1778f2;
+    }
+  }
+}
+
+.detail-button-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 2vh;
+}
+
+.connections {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  .connection-type {
+    margin: 0 1vw;
+    text-align: center;
+  }
+}
+
 //Side drawer
 .side-drawer {
   position: absolute;

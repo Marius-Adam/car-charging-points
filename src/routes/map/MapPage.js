@@ -6,6 +6,7 @@ import Geocoder from "react-map-gl-geocoder";
 import axios from "axios";
 import useDebounce from "../../hooks/use-debounce";
 
+import DetailDrawer from "./DetailDrawer";
 import Pins from "./Pins";
 
 export default function MapPage() {
@@ -21,7 +22,7 @@ export default function MapPage() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        `https://api.openchargemap.io/v3/poi/?output=json&latitude=${debouncedViewport.latitude}&longitude=${debouncedViewport.longitude}&distance=100&verbose=true&compact=true`
+        `https://api.openchargemap.io/v3/poi/?output=json&latitude=${debouncedViewport.latitude}&longitude=${debouncedViewport.longitude}&distance=100&verbose=false`
       );
       setData(result.data);
     };
@@ -66,6 +67,7 @@ export default function MapPage() {
         fitBoundsOptions={{ maxZoom: 15 }}
         position="top-right"
       />
+      <DetailDrawer />
     </MapGL>
   );
 }
