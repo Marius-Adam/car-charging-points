@@ -23,10 +23,19 @@ export default function PopupInfo(props) {
           {pin.AddressInfo.Postcode}
         </Typography>
         <br />
-        <Typography variant="caption" gutterBottom className="operational">
-          {pin.StatusType.Title}
-        </Typography>
-
+        {pin.StatusType.IsOperational ? (
+          <Typography variant="caption" gutterBottom className="operational">
+            Operational
+          </Typography>
+        ) : (
+          <Typography
+            variant="caption"
+            gutterBottom
+            className="non-operational"
+          >
+            Non Operational
+          </Typography>
+        )}
         <div className="detail-button-div">
           <Button
             variant="contained"

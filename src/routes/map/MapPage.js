@@ -5,7 +5,7 @@ import axios from "axios";
 import useDebounce from "../../hooks/use-debounce";
 
 //Components
-import DetailDrawer from "./DetailDrawer";
+import SideDrawer from "./SideDrawer";
 import Pins from "./Pins";
 
 export default function MapPage() {
@@ -21,7 +21,7 @@ export default function MapPage() {
   });
   const debouncedViewport = useDebounce(viewport, 500);
 
-  //Detail drawer state toggler
+  //Side drawer state toggler
   const toggleDrawer = (anchor, open) => (event) => {
     setDrawerState({ ...drawerState, [anchor]: open });
   };
@@ -34,7 +34,7 @@ export default function MapPage() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        `https://api.openchargemap.io/v3/poi/?output=json&latitude=${debouncedViewport.latitude}&longitude=${debouncedViewport.longitude}&distance=100&verbose=false`
+        `https://api.openchargemap.io/v3/poi/?output=json&latitude=${debouncedViewport.latitude}&longitude=${debouncedViewport.longitude}&distance=100`
       );
       setData(result.data);
     };
@@ -78,7 +78,7 @@ export default function MapPage() {
         fitBoundsOptions={{ maxZoom: 15 }}
         position="top-right"
       />
-      <DetailDrawer
+      <SideDrawer
         chargersInfo={data}
         setDrawerState={setDrawerState}
         drawerState={drawerState}

@@ -5,7 +5,6 @@ import PopupInfo from "./PopupInfo";
 
 export default function Pins(props) {
   const chargers = props.data;
-  console.log(props);
 
   const handleClose = () => {
     props.setSelectedPin(null);
