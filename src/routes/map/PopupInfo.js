@@ -22,38 +22,11 @@ export default function PopupInfo(props) {
         <Typography variant="caption" gutterBottom>
           {pin.AddressInfo.Postcode}
         </Typography>
-        <Typography variant="h6" align="center" gutterBottom>
-          Charger Types
+        <br />
+        <Typography variant="caption" gutterBottom className="operational">
+          {pin.StatusType.Title}
         </Typography>
-        <div className="connections">
-          {pin.Connections.map((connection, index) => {
-            if (connection.Level.IsFastChargeCapable === true) {
-              return (
-                <Typography
-                  variant="caption"
-                  gutterBottom
-                  key={index}
-                  className="connection-type"
-                >
-                  Fast Charge <br />
-                  <img src="./assets/fast.png" alt="fast charge" width="30px" />
-                </Typography>
-              );
-            } else {
-              return (
-                <Typography
-                  variant="caption"
-                  gutterBottom
-                  key={index}
-                  className="connection-type"
-                >
-                  Slow Charge <br />
-                  <img src="./assets/slow.png" alt="slow charge" width="30px" />
-                </Typography>
-              );
-            }
-          })}
-        </div>
+
         <div className="detail-button-div">
           <Button
             variant="contained"

@@ -12,6 +12,14 @@ a:-webkit-any-link {
   text-decoration: none;
   color: inherit;
 }
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
 
 //Navbar
 .navbar {
@@ -99,6 +107,9 @@ div {
       background-color: #1778f2;
     }
   }
+  .MuiTypography-caption.operational {
+    color: green;
+  }
 }
 
 .close-popup {
@@ -167,7 +178,16 @@ div {
   .inner-drawer {
     width: 25vw;
 
-    .chargers-info {
+    .charger-info {
+      .MuiTypography-h5 {
+        font-weight: 900;
+        margin-left: 1vw;
+      }
+    }
+    .charger-address {
+      margin: 1vw;
+    }
+    .directions-button {
       display: flex;
       justify-content: center;
 
