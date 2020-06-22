@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Drawer from "@material-ui/core/Drawer";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 
 export default function TemporaryDrawer(props) {
+  const [pinCoords, setPinCoords] = useState({ lat: 0, long: 0 });
+
+  useEffect(() => {
+    if (props.selectedPin === null) {
+    } else {
+      setPinCoords({
+        lat: props.selectedPin.AddressInfo.Latitude,
+        long: props.selectedPin.AddressInfo.Longitude,
+      });
+    }
+  }, [props.selectedPin]);
+
+  const googleQuerry = `https://www.google.com/maps/dir//${pinCoords.lat}, ${pinCoords.long}/`;
   return (
-    <>
+    <React.Fragment>
       {["left"].map((anchor) => (
         <div className="side-drawer" key={anchor}>
           <Drawer
@@ -23,12 +37,21 @@ export default function TemporaryDrawer(props) {
               onKeyDown={props.toggleDrawer(anchor, false)}
             >
               <div className="chargers-info">
-                <h1>Charger Info Here</h1>
+                <Button variant="contained" color="primary">
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="-Directions"
+                    href={googleQuerry}
+                  >
+                    Get Driving Directions
+                  </a>
+                </Button>
               </div>
             </div>
           </Drawer>
         </div>
       ))}
-    </>
+    </React.Fragment>
   );
 }

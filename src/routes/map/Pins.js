@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { Marker } from "react-map-gl";
 import Button from "@material-ui/core/Button";
 import PopupInfo from "./PopupInfo";
 
 export default function Pins(props) {
   const chargers = props.data;
-  console.log(props);
-  const [selectedPin, setSelectedPin] = useState(null);
 
   const handleClose = () => {
-    setSelectedPin(null);
+    props.setSelectedPin(null);
   };
 
   return (
-    <>
+    <React.Fragment>
       {chargers.map((charger, index) => (
         <Marker
           key={index}
@@ -23,21 +21,21 @@ export default function Pins(props) {
           <Button
             onClick={(e) => {
               e.preventDefault();
-              setSelectedPin(charger);
+              props.setSelectedPin(charger);
             }}
           >
             <img src="./assets/pin.svg" alt="marker pin" />
           </Button>
         </Marker>
       ))}
-      {selectedPin ? (
+      {props.selectedPin ? (
         <PopupInfo
-          selectedPin={selectedPin}
+          selectedPin={props.selectedPin}
           handleClose={handleClose}
-          setSelectedPin={setSelectedPin}
+          setSelectedPin={props.setSelectedPin}
           openDrawer={props.openDrawer}
         />
       ) : null}
-    </>
+    </React.Fragment>
   );
 }

@@ -10,10 +10,11 @@ import Pins from "./Pins";
 
 export default function MapPage() {
   const [data, setData] = useState([]);
+  const [selectedPin, setSelectedPin] = useState(null);
   const [viewport, setViewport] = useState({
     latitude: 51.50773,
     longitude: -0.13457,
-    zoom: 12.5,
+    zoom: 13,
   });
   const [drawerState, setDrawerState] = useState({
     left: false,
@@ -23,7 +24,6 @@ export default function MapPage() {
   //Detail drawer state toggler
   const toggleDrawer = (anchor, open) => (event) => {
     setDrawerState({ ...drawerState, [anchor]: open });
-    console.log("clicked in popup");
   };
 
   const openDrawer = () => {
@@ -66,7 +66,6 @@ export default function MapPage() {
       onViewportChange={handleViewportChange}
       mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
     >
-      <Pins data={data} openDrawer={openDrawer} />
       <Geocoder
         mapRef={mapRef}
         onViewportChange={handleGeocoderViewportChange}
@@ -84,6 +83,13 @@ export default function MapPage() {
         setDrawerState={setDrawerState}
         drawerState={drawerState}
         toggleDrawer={toggleDrawer}
+        selectedPin={selectedPin}
+      />
+      <Pins
+        data={data}
+        openDrawer={openDrawer}
+        selectedPin={selectedPin}
+        setSelectedPin={setSelectedPin}
       />
     </MapGL>
   );

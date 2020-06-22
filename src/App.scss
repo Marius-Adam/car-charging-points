@@ -165,7 +165,25 @@ div {
     background-color: #fafafa;
   }
   .inner-drawer {
-    width: 30vw;
+    width: 25vw;
+
+    .chargers-info {
+      display: flex;
+      justify-content: center;
+
+      .MuiButton-containedPrimary {
+        margin-top: 1vh;
+        width: 80%;
+        position: absolute;
+        bottom: 15vh;
+        border-radius: 5px;
+        height: 8vh;
+        background-color: #4caf50;
+        &:hover {
+          background-color: #1b5e20;
+        }
+      }
+    }
   }
   .MuiBackdrop-root {
     visibility: hidden;

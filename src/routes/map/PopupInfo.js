@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 
 export default function PopupInfo(props) {
   const pin = props.selectedPin;
-  console.log(props);
+
   return (
     <Popup
       latitude={pin.AddressInfo.Latitude}
