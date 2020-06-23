@@ -113,6 +113,10 @@ div {
   .MuiTypography-caption.non-operational {
     color: red;
   }
+  .connectors {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }
 
 .close-popup {
