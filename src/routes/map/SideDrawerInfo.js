@@ -12,7 +12,7 @@ export default function SideDrawerInfo(props) {
           {props.pinAddress.Title}
         </Typography>
         <div className="charger-address">
-          <Grid container direction="row" justify="center" alignItems="center">
+          <Grid container direction="row" justify="space-evenly" alignItems="center">
             <Grid item lg={2}>
               <img src="./assets/pin.svg" alt="landing" />
             </Grid>
@@ -40,7 +40,7 @@ export default function SideDrawerInfo(props) {
             <span className="connectors-span">Chargers</span>
           </Typography>
           <Typography variant="subtitle1">
-            <span className="connectors-span">Operator:</span>
+            <span className="connectors-span">Operator :</span>
             {
               <a
                 href={`${props.pinChargers.OperatorInfo.WebsiteURL}`}
@@ -52,53 +52,22 @@ export default function SideDrawerInfo(props) {
             }
           </Typography>
           <Typography variant="subtitle1">
-            <span className="connectors-span">Number Of Stations:</span>
+            <span className="connectors-span">Number Of Stations :</span>
             {<span>{` ${props.pinChargers.NumberOfPoints}`}</span>}
           </Typography>
           <Typography variant="subtitle1">
-            <span className="connectors-span">Usage Type:</span>
+            <span className="connectors-span">Usage Type :</span>
             {props.pinChargers.UsageType
               ? ` ${props.pinChargers.UsageType.Title}`
               : " Unknown Operator"}
           </Typography>
           <Typography variant="subtitle1">
-            <span className="connectors-span">Usage Cost:</span>
+            <span className="connectors-span">Usage Cost :</span>
             {<span>{` ${props.pinChargers.UsageCost}`}</span>}
           </Typography>
         </div>
       </Paper>
       <hr />
-      <Paper elevation={3}>
-        <div className="connection-types">
-          {props.pinChargers.Connections.map((connection, index) => {
-            if (connection.Level.IsFastChargeCapable === true) {
-              return (
-                <Typography
-                  variant="caption"
-                  gutterBottom
-                  key={index}
-                  className="connection"
-                >
-                  Fast Charge <br />
-                  <img src="./assets/fast.png" alt="fast charge" width="30px" />
-                </Typography>
-              );
-            } else {
-              return (
-                <Typography
-                  variant="caption"
-                  gutterBottom
-                  key={index}
-                  className="connection"
-                >
-                  Slow Charge <br />
-                  <img src="./assets/slow.png" alt="slow charge" width="30px" />
-                </Typography>
-              );
-            }
-          })}
-        </div>
-      </Paper>
       <div className="directions-button">
         <Button variant="contained" color="primary">
           <a

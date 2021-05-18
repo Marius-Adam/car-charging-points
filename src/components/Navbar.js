@@ -38,16 +38,8 @@ export default function PersistentDrawerLeft() {
               onClick={handleDrawerOpen}
               edge="start"
             >
-              <MenuIcon />
+              <MenuIcon fontSize="large"/>
             </IconButton>
-            <div className="login">
-              <IconButton>
-                <img src="./assets/google.png" alt="logo" width="21" />
-              </IconButton>
-              <IconButton>
-                <img src="./assets/facebook.png" alt="logo" width="23" />
-              </IconButton>
-            </div>
           </Toolbar>
           <Link to="/">
             <img
@@ -61,7 +53,7 @@ export default function PersistentDrawerLeft() {
         <Drawer variant="persistent" anchor="left" open={open}>
           <div className="drawer-header">
             <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon fontSize="large"/>
             </IconButton>
           </div>
           <Divider />

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import MapGL, { GeolocateControl } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
-import axios from "axios";
 import useDebounce from "../../hooks/use-debounce";
 
 //Components
@@ -12,9 +11,9 @@ export default function MapPage() {
   const [data, setData] = useState([]);
   const [selectedPin, setSelectedPin] = useState(null);
   const [viewport, setViewport] = useState({
-    latitude: 51.50773,
-    longitude: -0.13457,
-    zoom: 13,
+    latitude: 53.4084,
+    longitude: -2.9916,
+    zoom: 12,
   });
   const [drawerState, setDrawerState] = useState({
     left: false,
@@ -22,7 +21,7 @@ export default function MapPage() {
   const debouncedViewport = useDebounce(viewport, 500);
 
   //Side drawer state toggler
-  const toggleDrawer = (anchor, open) => (event) => {
+  const toggleDrawer = (anchor, open) => () => {
     setDrawerState({ ...drawerState, [anchor]: open });
   };
 
@@ -32,13 +31,23 @@ export default function MapPage() {
 
   //Api call to OpenChargersAPI
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        `https://api.openchargemap.io/v3/poi/?output=json&latitude=${debouncedViewport.latitude}&longitude=${debouncedViewport.longitude}&distance=100`
-      );
-      setData(result.data);
-    };
-    fetchData();
+    fetch(
+      `https://api.openchargemap.io/v3/poi/?output=json&latitude=${debouncedViewport.latitude}&longitude=${debouncedViewport.longitude}&distance=100`,
+      {
+        headers: {
+          "X-API-Key": process.env.REACT_APP_OPEN_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setData(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }, [debouncedViewport]);
 
   const mapRef = useRef();
@@ -60,12 +69,12 @@ export default function MapPage() {
     <MapGL
       ref={mapRef}
       {...viewport}
-      mapStyle="mapbox://styles/mcadamek/ckbmn7bim1knm1imdyamv4qbl"
+      mapStyle="mapbox://styles/mapbox/outdoors-v11?optimize=true"
       width="100vw"
       height="100vh"
+      minZoom={12}
       onViewportChange={handleViewportChange}
-      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
-    >
+      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}>
       <Geocoder
         mapRef={mapRef}
         onViewportChange={handleGeocoderViewportChange}
@@ -75,7 +84,7 @@ export default function MapPage() {
       <GeolocateControl
         positionOptions={{ enableHighAccuracy: true }}
         trackUserLocation={true}
-        fitBoundsOptions={{ maxZoom: 15 }}
+        fitBoundsOptions={{ maxZoom: 12 }}
         position="top-right"
       />
       <SideDrawer
@@ -85,12 +94,7 @@ export default function MapPage() {
         toggleDrawer={toggleDrawer}
         selectedPin={selectedPin}
       />
-      <Pins
-        data={data}
-        openDrawer={openDrawer}
-        selectedPin={selectedPin}
-        setSelectedPin={setSelectedPin}
-      />
+      <Pins data={data} openDrawer={openDrawer} selectedPin={selectedPin} setSelectedPin={setSelectedPin} />
     </MapGL>
   );
 }
